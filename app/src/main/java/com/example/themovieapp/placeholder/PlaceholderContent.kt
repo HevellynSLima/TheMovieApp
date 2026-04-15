@@ -58,13 +58,13 @@ object PlaceholderContent {
     // A classe de dados deve refletir exatamente o que você usa no init
     data class PlaceholderItem(
         val id: String,
-        val content: String,
+        val title: String,
         val resumo : String,
         val details: String,
         val imageRes: Int,
         val avaliacao: Double,
         val galeria: List<Int>
     ) {
-        override fun toString(): String = content
+        override fun toString(): String = title
     }
 }

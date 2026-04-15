@@ -8,9 +8,15 @@ import android.widget.TextView
 import com.example.themovieapp.databinding.ItemMovieBinding
 import com.example.themovieapp.placeholder.PlaceholderContent.PlaceholderItem
 
+
+interface MovieItemListener{
+    fun onItemSelected(position: Int)
+}
 class MyItemRecyclerViewAdapter(
     private val values: List<PlaceholderItem>,
-    private val onItemClick: (Int) -> Unit
+
+    private val listener: MovieItemListener
+
 ) : RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -26,26 +32,30 @@ class MyItemRecyclerViewAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
 
-        // Nome do filme
-        holder.idView.text = item.content
+        holder.bindingItem(item)
 
         // Sinopse de até 140 caracteres (que está no campo details do Placeholder)
-        holder.sinopseView.text = item.resumo
+       // holder.sinopseView.text = item.resumo
 
         // Foto filme
         holder.fotoFilme.setImageResource(item.imageRes)
 
-        holder.itemView.setOnClickListener {
-            onItemClick(position)
+        holder.view.setOnClickListener {
+            listener.onItemSelected(position)
         }
     }
 
 
     override fun getItemCount(): Int = values.size
 
-    inner class ViewHolder(binding: ItemMovieBinding) : RecyclerView.ViewHolder(binding.root) {
-        val idView: TextView = binding.titulo
-        val sinopseView: TextView = binding.sinopse
+    inner class ViewHolder(private val binding: ItemMovieBinding) : RecyclerView.ViewHolder(binding.root) {
+       val view = binding.root
+
         val fotoFilme : ImageView = binding.imageView
+        fun bindingItem(item: PlaceholderItem){
+            binding.movieItem = item
+            binding.executePendingBindings()
+
+        }
     }
 }

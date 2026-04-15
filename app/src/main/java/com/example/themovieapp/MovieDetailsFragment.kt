@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.navigation.navGraphViewModels
 import com.example.themovieapp.databinding.FragmentMovieDetailsBinding
 import org.imaginativeworld.whynotimagecarousel.model.CarouselItem
@@ -14,17 +15,12 @@ import org.imaginativeworld.whynotimagecarousel.model.CarouselItem
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [MovieDetailsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+
 class MovieDetailsFragment : Fragment() {
     // TODO: Rename and change types of parameters
-    //Configura o ViewBinding
+
     private var _binding: FragmentMovieDetailsBinding? = null
     private val binding get() = _binding!!
-
     private val viewModel by navGraphViewModels<MovieViewModel>(R.id.movie_graph){
         defaultViewModelProviderFactory
     }
@@ -33,8 +29,15 @@ class MovieDetailsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentMovieDetailsBinding.inflate(inflater, container, false)
+    ): View {
+        _binding = DataBindingUtil.inflate(inflater,
+            R.layout.fragment_movie_details,
+            container,
+            false)
+
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
+
         // Inflate the layout for this fragment
         return binding.root
     }
@@ -43,7 +46,7 @@ class MovieDetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.filmeSelecionado.observe(viewLifecycleOwner){
-            filme -> binding.tituloSinopse.text = filme.content
+            filme -> binding.tituloSinopse.text = filme.title
             binding.sinopse.text = filme.details// Use aqui a sinopse completa
             binding.imageView3.setImageResource(filme.imageRes)
 
