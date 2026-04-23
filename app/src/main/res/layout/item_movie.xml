@@ -6,7 +6,7 @@
     <data>
         <variable
             name="movieItem"
-            type="com.example.themovieapp.placeholder.PlaceholderContent.PlaceholderItem" />
+            type="com.example.themovieapp.data.Movie" />
 
     </data>
 
@@ -33,7 +33,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:srcCompat="@drawable/zootropolis1" />
+                    app:imageUrl="@{movieItem.imageUrl}" />
 
                 <TextView
                     android:id="@+id/titulo"
@@ -54,11 +54,13 @@
                     tools:text="Nome do Filme" />
 
                 <TextView
-                    android:id="@+id/sinopse"
+                    android:id="@+id/contentText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:text="@{movieItem.resumo}"
+                    android:text="@{movieItem.overview}"
+                    android:maxLines="3"
+                    android:ellipsize="end"
                     android:textAlignment="center"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
