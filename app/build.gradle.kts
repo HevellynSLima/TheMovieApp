@@ -66,6 +66,10 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.moshi)
 
+    //Coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+
     // OkHttp
     implementation(libs.okhttp)
     implementation(libs.okhttp.logging.interceptor)
