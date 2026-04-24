@@ -1,10 +1,14 @@
 package com.example.themovieapp
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.themovieapp.data.Movie
+import com.example.themovieapp.data.local.AppDatabase
+import com.example.themovieapp.data.local.MovieEntity
 import com.example.themovieapp.movieDetails.MovieDetails
 import com.example.themovieapp.movieHome.TMDBService
 import kotlinx.coroutines.launch
@@ -12,8 +16,11 @@ import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-class MovieViewModel: ViewModel() {
+class MovieViewModel(application: Application): AndroidViewModel(application) {
 
+    private val dao = AppDatabase
+        .getDatabase(application)
+        .movieDao()
     private val _movieImagesLiveData = MutableLiveData<List<String>>()
     val movieImagesLiveData: LiveData<List<String>>
         get() = _movieImagesLiveData
@@ -44,10 +51,34 @@ class MovieViewModel: ViewModel() {
                     language = "pt-BR"
                 )
 
+                val entities = movieResponse.results.map {
+                    MovieEntity(
+                        id = it.id,
+                        title = it.title,
+                        overview = it.overview ?: "",
+                        posterPath = it.posterPath
+                    )
+                }
+
+                dao.insertMovies(entities)
+
                 _movieListLiveData.postValue(movieResponse.results)
 
             } catch (e: Exception) {
                 e.printStackTrace()
+
+                val localMovies = dao.getMovies()
+
+                val movies = localMovies.map {
+                    Movie(
+                        id = it.id,
+                        title = it.title,
+                        overview = it.overview,
+                        posterPath = it.posterPath
+                    )
+                }
+
+                _movieListLiveData.postValue(movies)
             }
         }
     }
