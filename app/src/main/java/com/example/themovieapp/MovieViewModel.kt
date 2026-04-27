@@ -4,11 +4,10 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.themovieapp.data.Movie
+import com.example.themovieapp.data.MovieRepository
 import com.example.themovieapp.data.local.AppDatabase
-import com.example.themovieapp.data.local.MovieEntity
 import com.example.themovieapp.movieDetails.MovieDetails
 import com.example.themovieapp.movieHome.TMDBService
 import kotlinx.coroutines.launch
@@ -18,9 +17,6 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 class MovieViewModel(application: Application): AndroidViewModel(application) {
 
-    private val dao = AppDatabase
-        .getDatabase(application)
-        .movieDao()
     private val _movieImagesLiveData = MutableLiveData<List<String>>()
     val movieImagesLiveData: LiveData<List<String>>
         get() = _movieImagesLiveData
@@ -41,64 +37,26 @@ class MovieViewModel(application: Application): AndroidViewModel(application) {
         .addConverterFactory(MoshiConverterFactory.create())
         .build()
 
+    private val service = retrofit.create(TMDBService::class.java)
+
+    private val dao = AppDatabase
+        .getDatabase(application)
+        .movieDao()
+
+    private val repository = MovieRepository(service,dao)
+
     fun getMovieData() {
         viewModelScope.launch {
-            try {
-                val service = retrofit.create(TMDBService::class.java)
-
-                val movieResponse = service.getPopularMovies(
-                    apiKey = ApiCredentials.apiKey,
-                    language = "pt-BR"
-                )
-
-                val entities = movieResponse.results.map {
-                    MovieEntity(
-                        id = it.id,
-                        title = it.title,
-                        overview = it.overview ?: "",
-                        posterPath = it.posterPath
-                    )
-                }
-
-                dao.insertMovies(entities)
-
-                _movieListLiveData.postValue(movieResponse.results)
-
-            } catch (e: Exception) {
-                e.printStackTrace()
-
-                val localMovies = dao.getMovies()
-
-                val movies = localMovies.map {
-                    Movie(
-                        id = it.id,
-                        title = it.title,
-                        overview = it.overview,
-                        posterPath = it.posterPath
-                    )
-                }
-
+                val movies = repository.getMovies()
                 _movieListLiveData.postValue(movies)
-            }
         }
     }
 
     fun getMovieImages(movieId: Int) {
         viewModelScope.launch {
             try {
-                val service = retrofit.create(TMDBService::class.java)
-
-                val imagesResponse = service.getMovieImages(
-                    movieId = movieId,
-                    apiKey = ApiCredentials.apiKey
-                )
-
-                val imageUrls = imagesResponse.backdrops.map {
-                    "https://image.tmdb.org/t/p/w500${it.filePath}"
-                }
-
-                _movieImagesLiveData.postValue(imageUrls)
-
+                val images = repository.getMovieImage(movieId)
+                _movieImagesLiveData.postValue(images)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
