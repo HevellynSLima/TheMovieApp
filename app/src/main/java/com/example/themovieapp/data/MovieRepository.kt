@@ -4,8 +4,9 @@ import com.example.themovieapp.ApiCredentials
 import com.example.themovieapp.data.local.MovieDao
 import com.example.themovieapp.data.local.MovieEntity
 import com.example.themovieapp.movieHome.TMDBService
+import javax.inject.Inject
 
-class MovieRepository(
+class MovieRepository @Inject constructor(
     private val service: TMDBService,
     private val dao: MovieDao) {
 

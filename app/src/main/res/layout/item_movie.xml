@@ -68,15 +68,6 @@
                     app:layout_constraintTop_toBottomOf="@+id/titulo" />
 
                 <Button
-                    android:id="@+id/Compartilhar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Compartilhar"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/guideline2"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-                <Button
                     android:id="@+id/Detalhes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -85,15 +76,6 @@
                     android:text="Ver Detalhes"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/guideline2" />
-
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintGuide_begin="189dp"
                     app:layout_constraintStart_toStartOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

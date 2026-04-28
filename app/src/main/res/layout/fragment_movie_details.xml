@@ -30,20 +30,11 @@
             android:layout_height="0dp"
             android:layout_margin="10dp"
             android:text="@{viewModel.movieDetailsLiveData.content}"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/Avaliacao"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/imageCarousel"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tituloSinopse" />
-
-        <TextView
-            android:id="@+id/Avaliacao"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="⭐= 0.0"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toTopOf="@+id/imageCarousel"
-            app:layout_constraintStart_toStartOf="parent" />
 
 
         <ImageView
@@ -60,7 +51,6 @@
             android:id="@+id/imageCarousel"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:layout_marginBottom="20dp"
             android:addStatesFromChildren="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

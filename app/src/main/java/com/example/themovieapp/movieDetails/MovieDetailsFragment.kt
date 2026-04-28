@@ -11,9 +11,10 @@ import com.bumptech.glide.Glide
 import com.example.themovieapp.databinding.FragmentMovieDetailsBinding
 import com.example.themovieapp.MovieViewModel
 import com.example.themovieapp.R
+import dagger.hilt.android.AndroidEntryPoint
 import org.imaginativeworld.whynotimagecarousel.model.CarouselItem
 
-
+@AndroidEntryPoint
 class MovieDetailsFragment : Fragment() {
     private val viewModel by navGraphViewModels<MovieViewModel>(R.id.movie_graph){
         defaultViewModelProviderFactory

@@ -13,7 +13,9 @@ import com.example.themovieapp.R
 import com.example.themovieapp.databinding.FragmentMovieListBinding
 import com.example.themovieapp.MovieViewModel
 import com.example.themovieapp.data.Movie
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MovieFragment : Fragment(), MovieItemListener {
     private val viewModel by navGraphViewModels<MovieViewModel>(R.id.movie_graph) {
         defaultViewModelProviderFactory
